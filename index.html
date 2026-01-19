@@ -36,23 +36,21 @@
         body::before {
             content: "";
             position: fixed;
-            top: 0; left: 0; width: 200%; height: 200%; /* ขยายใหญ่กว่าจอเพื่อรองรับการขยับ */
+            top: 0; left: 0; width: 200%; height: 200%;
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
             background-size: 50px 50px;
             z-index: -1;
-            /* Animation การเคลื่อนไหว */
             animation: gridMove 20s linear infinite;
         }
 
-        /* คีย์เฟรมสำหรับการขยับพื้นหลัง */
         @keyframes gridMove {
             0% { transform: translate(0, 0); }
             100% { transform: translate(-50px, -50px); }
         }
 
-        /* --- Main Title (GLMOFUS) --- */
+        /* --- Main Title --- */
         .main-header {
             margin-top: 80px;
             margin-bottom: 50px;
@@ -95,7 +93,7 @@
             padding: 15px 25px;
             border-radius: 5px;
             border: 1px solid #333;
-            background: rgba(15, 15, 15, 0.8); /* โปร่งแสงนิดหน่อย */
+            background: rgba(15, 15, 15, 0.8);
             backdrop-filter: blur(5px);
             color: white;
             font-family: var(--font-body);
@@ -187,11 +185,7 @@
             gap: 6px;
         }
 
-        .rank-icon {
-            width: 16px; 
-            height: 16px;
-            object-fit: contain;
-        }
+        /* เอา class .rank-icon ออกจาก CSS ก็ได้ หรือปล่อยไว้ก็ไม่มีผลเพราะเราลบ element ออกจาก JS แล้ว */
 
         .name {
             font-family: var(--font-main);
@@ -252,7 +246,7 @@
             .site-title { font-size: 2.5rem; }
             .grid-container { grid-template-columns: 1fr; }
             .content-wrapper { padding: 0 15px; }
-            body::before { background-size: 30px 30px; } /* ปรับขนาดลายพื้นหลังในมือถือ */
+            body::before { background-size: 30px 30px; }
         }
     </style>
 </head>
@@ -293,23 +287,17 @@
     </div>
 
     <script>
-        const defaultImg = "https://img2.pic.in.th/a479b75c-4908-4b85-82ea-92707086f4cf.png";
+        // แก้ไขรูปโปรไฟล์ใหม่ที่นี่
+        const defaultImg = "https://img2.pic.in.th/sdds.png";
 
-        // --- SVG Icons (Base64) ---
-        const rankIcons = {
-            'founder': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI0ZGRDcwMCI+PHBhdGggZD0iTTUgMTZMMyA1TDguNSAxMEwxMiA0TDE1LjUgMTBMMjEgNUwxOSAxNkg1TTE5IDE4SDVWMTlIMTlWMThaIi8+PC9zdmc+',
-            'lead': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI0ZGMDAwMCI+PHBhdGggZD0iTTEyIDE3LjI3TDE4LjE4IDIxTDE2LjU0IDEzLjk3TDIyIDkuMjRMMTQuODEgOC42MkwxMiAyTDkuMTkgOC42MkwyIDkuMjRMNy40NSAxMy45N0w1LjgyIDIxTDEyIDE3LjI3WiIvPjwvc3ZnPg==',
-            'member': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI0JGNDBCRiI+PHBhdGggZD0iTTEyIDEyQzE0LjIxIDEyIDE2IDEwLjIxIDE2IDhDMTYgNS43OSAxNC4yMSA0IDEyIDRDOS43OSA0IDggNS43OSA4IDhDOCAxMC4yMSA5Ljc5IDEyIDEyIDEyTTEyIDE0QzkuMzMgMTQgNCAxNS4zNCA0IDE4VjIwSDIwVjE4QzIwIDE1LjM0IDE0LjY3IDE0IDEyIDE0WiIvPjwvc3ZnPg=='
-        };
-
-        // --- ข้อมูล Rank (อัปเดตชื่อให้ไม่มีนามสกุล) ---
+        // --- ข้อมูล Rank (ยังคงไว้ใช้สำหรับจัดหมวดหมู่ แต่ไม่แสดงไอคอน) ---
         const founderName = "Nixeny";
         const leadNames = [
             "Tail", "Day", "Fatez", 
             "Seefour", "Real"
         ];
 
-        // --- รายชื่อสมาชิก (ลบคำว่า Dernyoungsay ออกหมดแล้ว) ---
+        // --- รายชื่อสมาชิก ---
         let rawMembers = [
             { name: "Nixeny", link: "https://www.facebook.com/nixeny.dernyoungsay" },
             { name: "Boom", link: "https://www.facebook.com/boom.dernyoungsay" },
@@ -375,20 +363,18 @@
         let leadersList = [];
         let membersList = [];
 
-        // Logic: เอา 3 คนแรกสุดจากการเรียงลำดับไปใส่ Leader, ที่เหลือใส่ Member
         leadersList = allMembers.slice(0, 3);
         membersList = allMembers.slice(3);
 
-        // Variables for Pagination (Only for Members)
-        const itemsPerPage = 8; // ปรับจำนวนต่อหน้าตรงนี้
+        // Variables for Pagination
+        const itemsPerPage = 8;
         let currentPage = 1;
-        let filteredMembers = [...membersList]; // สำหรับ Search
+        let filteredMembers = [...membersList];
 
-        // Function to Create Card HTML
+        // Function to Create Card HTML (ลบส่วนแสดง icon ยศออกแล้ว)
         function createCard(member) {
             const imgSrc = defaultImg;
-            const rankImgSrc = rankIcons[member.rank];
-            // ตัดชื่อลิ้งก์ให้สั้นลงเพื่อความสวยงาม
+            // ตัดชื่อลิ้งก์ให้สั้นลง
             const displayLink = member.link.replace(/^https?:\/\/(www\.)?facebook\.com\//, '').substring(0, 15) + (member.link.length > 25 ? '...' : '');
 
             return `
@@ -397,7 +383,6 @@
                         <img src="${imgSrc}" class="profile-pic" alt="Profile">
                         <div class="info-text">
                             <div class="name-container">
-                                <img src="${rankImgSrc}" class="rank-icon">
                                 <span class="name">${member.name}</span>
                             </div>
                             <span class="link-text">${displayLink}</span>
@@ -410,7 +395,7 @@
             `;
         }
 
-        // Render Leaders (Static, no pagination)
+        // Render Leaders
         function renderLeaders() {
             const container = document.getElementById('leaderListContainer');
             container.innerHTML = "";
@@ -423,7 +408,7 @@
             }
         }
 
-        // Render Members (Paginated)
+        // Render Members
         function renderMembers() {
             const container = document.getElementById('memberListContainer');
             container.innerHTML = "";
@@ -457,13 +442,10 @@
         // Search System
         document.getElementById('searchInput').addEventListener('keyup', (e) => {
             const text = e.target.value.toLowerCase();
-            
-            // Search in Members Only (Leaders always stay)
             filteredMembers = membersList.filter(m => 
                 m.name.toLowerCase().includes(text) || 
                 m.link.toLowerCase().includes(text)
             );
-            
             currentPage = 1;
             renderMembers();
         });
