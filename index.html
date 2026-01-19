@@ -32,16 +32,24 @@
             align-items: center;
         }
 
-        /* --- Background Pattern --- */
+        /* --- Animated Background Pattern --- */
         body::before {
             content: "";
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; left: 0; width: 200%; height: 200%; /* ขยายใหญ่กว่าจอเพื่อรองรับการขยับ */
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
             z-index: -1;
+            /* Animation การเคลื่อนไหว */
+            animation: gridMove 20s linear infinite;
+        }
+
+        /* คีย์เฟรมสำหรับการขยับพื้นหลัง */
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50px, -50px); }
         }
 
         /* --- Main Title (GLMOFUS) --- */
@@ -63,9 +71,8 @@
             display: inline-block;
         }
         
-        /* เส้นขีดเล็กๆ ใต้ชื่อเหมือนในรูป */
         .site-title::after {
-            content: "NOT SAINT BUT SINNER"; /* หรือใส่ข้อความเล็กๆ */
+            content: "NOT SAINT BUT SINNER"; 
             display: block;
             font-size: 0.8rem;
             font-weight: 400;
@@ -88,7 +95,8 @@
             padding: 15px 25px;
             border-radius: 5px;
             border: 1px solid #333;
-            background: #0f0f0f;
+            background: rgba(15, 15, 15, 0.8); /* โปร่งแสงนิดหน่อย */
+            backdrop-filter: blur(5px);
             color: white;
             font-family: var(--font-body);
             text-align: left;
@@ -100,7 +108,7 @@
         /* --- Content Wrapper --- */
         .content-wrapper {
             width: 100%;
-            max-width: 1000px; /* ขยายความกว้างเพื่อให้วาง 2 คอลัมน์ได้ถ้าต้องการ */
+            max-width: 1000px; 
             padding: 0 20px;
             flex-grow: 1;
             display: flex;
@@ -108,7 +116,7 @@
             gap: 40px;
         }
 
-        /* --- Section Headers (LEADER / MEMBERS) --- */
+        /* --- Section Headers --- */
         .section-header {
             font-family: var(--font-main);
             font-size: 1.2rem;
@@ -122,21 +130,19 @@
             text-transform: uppercase;
         }
         
-        .section-header i {
-            color: #fff; /* หรือสีเทาตามรูป */
-        }
+        .section-header i { color: #fff; }
 
-        /* --- Grid Layout for Cards --- */
+        /* --- Grid Layout --- */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* ปรับให้เป็น Grid คล้ายรูป */
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 15px;
         }
 
         /* --- Member Card --- */
         .member-card {
             background: var(--card-bg);
-            border-radius: 8px; /* ปรับให้เหลี่ยมขึ้นนิดนึงตามรูป */
+            border-radius: 8px;
             padding: 15px 20px;
             display: flex;
             align-items: center;
@@ -151,6 +157,7 @@
             background: #252525;
             border-color: #555;
             transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         .card-left {
@@ -199,7 +206,6 @@
             margin-top: 2px;
         }
 
-        /* ปุ่ม Facebook */
         .fb-icon {
             color: #444;
             font-size: 1.2rem;
@@ -221,7 +227,7 @@
         }
 
         .page-btn {
-            background: transparent;
+            background: rgba(0,0,0,0.5);
             color: #888;
             border: 1px solid #333;
             padding: 8px 16px;
@@ -229,7 +235,7 @@
             cursor: pointer;
             transition: 0.3s;
         }
-        .page-btn:hover:not(:disabled) { border-color: #fff; color: #fff; }
+        .page-btn:hover:not(:disabled) { border-color: #fff; color: #fff; background: #222; }
         .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
         /* Footer */
@@ -244,8 +250,9 @@
         /* Responsive Mobile */
         @media (max-width: 768px) {
             .site-title { font-size: 2.5rem; }
-            .grid-container { grid-template-columns: 1fr; } /* มือถือเรียงเดี่ยว */
+            .grid-container { grid-template-columns: 1fr; }
             .content-wrapper { padding: 0 15px; }
+            body::before { background-size: 30px 30px; } /* ปรับขนาดลายพื้นหลังในมือถือ */
         }
     </style>
 </head>
@@ -295,56 +302,56 @@
             'member': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI0JGNDBCRiI+PHBhdGggZD0iTTEyIDEyQzE0LjIxIDEyIDE2IDEwLjIxIDE2IDhDMTYgNS43OSAxNC4yMSA0IDEyIDRDOS43OSA0IDggNS43OSA4IDhDOCAxMC4yMSA5Ljc5IDEyIDEyIDEyTTEyIDE0QzkuMzMgMTQgNCAxNS4zNCA0IDE4VjIwSDIwVjE4QzIwIDE1LjM0IDE0LjY3IDE0IDEyIDE0WiIvPjwvc3ZnPg=='
         };
 
-        // --- ข้อมูล Rank ---
-        const founderName = "Nixeny Dernyoungsay";
+        // --- ข้อมูล Rank (อัปเดตชื่อให้ไม่มีนามสกุล) ---
+        const founderName = "Nixeny";
         const leadNames = [
-            "Tail Dernyoungsay", "Day Dernyoungsay", "Fatez Dernyoungsay", 
-            "Seefour Dernyoungsay", "Real Dernyoungsay"
+            "Tail", "Day", "Fatez", 
+            "Seefour", "Real"
         ];
 
-        // --- รายชื่อสมาชิก ---
+        // --- รายชื่อสมาชิก (ลบคำว่า Dernyoungsay ออกหมดแล้ว) ---
         let rawMembers = [
-            { name: "Nixeny Dernyoungsay", link: "https://www.facebook.com/nixeny.dernyoungsay" },
-            { name: "Boom Dernyoungsay", link: "https://www.facebook.com/boom.dernyoungsay" },
-            { name: "Tail Dernyoungsay", link: "https://www.facebook.com/tail.kodomo" },
-            { name: "Jxlly Dernyoungsay", link: "https://www.facebook.com/jxlly.dernyoungsay" },
-            { name: "Fatez Dernyoungsay", link: "https://www.facebook.com/fatez.dernyongsay" },
-            { name: "Day Dernyoungsay", link: "https://www.facebook.com/day.dernyoungsay" },
-            { name: "Porsch Dernyoungsay", link: "https://www.facebook.com/porsch.dernyoungsay" },
-            { name: "Medsigx Dernyoungsay", link: "https://www.facebook.com/Medsigx" },
-            { name: "Ganz Dernyoungsay", link: "https://www.facebook.com/Ganzdys" },
-            { name: "Min Dernyoungsay", link: "https://www.facebook.com/profile.php?id=61583563406342" },
-            { name: "Bacon Dernyoungsay", link: "https://www.facebook.com/bacon.dernyoungsay" },
-            { name: "Seefour Dernyoungsay", link: "https://www.facebook.com/seefour.dernyoungsay" },
-            { name: "Painx Dernyoungsay", link: "https://www.facebook.com/painfui.dernyoungsay" },
-            { name: "Icey Dernyoungsay", link: "https://www.facebook.com/Alpha.Wellesley" },
-            { name: "Baycon Dernyoungsay", link: "https://www.facebook.com/baycon.elfuego" },
-            { name: "Sim Dernyoungsay", link: "https://www.facebook.com/sim.xers" },
-            { name: "Gxni Dernyoungsay", link: "https://www.facebook.com/gxni.uzi" },
-            { name: "Combo Dernyoungsay", link: "https://www.facebook.com/combo.dernyoungsay" },
-            { name: "Real Dernyoungsay", link: "https://www.facebook.com/real.dernyoungsay.993545" },
-            { name: "Kyler Dernyoungsay", link: "https://www.facebook.com/kyler.ghett" },
-            { name: "Cevo Dernyoungsay", link: "https://www.facebook.com/cevo.mommam" },
-            { name: "Songsu Dernyoungsay", link: "https://www.facebook.com/sxngsxdys" },
-            { name: "Coos Dernyoungsay", link: "https://www.facebook.com/coos.bestpart" },
-            { name: "Peddzy Dernyoungsay", link: "https://www.facebook.com/peddzyy" },
-            { name: "Zen Dernyoungsay", link: "https://www.facebook.com/Zenwasd" },
-            { name: "Realx Dernyoungsay", link: "https://www.facebook.com/real.justcry" }, 
-            { name: "Bangto Dernyoungsay", link: "https://www.facebook.com/hhs.haha.90" },
-            { name: "Oscar Dernyoungsay", link: "https://www.facebook.com/ziggado.dereck" },
-            { name: "Kung Dernyoungsay", link: "https://www.facebook.com/snow.dernyoungsay" },
-            { name: "Ronx Dernyoungsay", link: "https://www.facebook.com/rxnnylesbr" },
-            { name: "Jacob Dernyoungsay", link: "https://www.facebook.com/JacobLaurenn" },
-            { name: "Est Dernyoungsay", link: "https://www.facebook.com/est.wellesley" },
-            { name: "Interneptq Dernyoungsay", link: "https://www.facebook.com/Interneptq1" },
-            { name: "Jimmy Dernyoungsay", link: "https://www.facebook.com/banchamek.banchamek.banchamek.2025" },
-            { name: "Han Dernyoungsay", link: "https://www.facebook.com/profile.php?id=61583018188887" },
-            { name: "Auan Dernyoungsay", link: "https://www.facebook.com/eithan.styleboy" },
-            { name: "Trafalgar Dernyoungsay", link: "https://www.facebook.com/TrafalgarWC" },
+            { name: "Nixeny", link: "https://www.facebook.com/nixeny.dernyoungsay" },
+            { name: "Boom", link: "https://www.facebook.com/boom.dernyoungsay" },
+            { name: "Tail", link: "https://www.facebook.com/tail.kodomo" },
+            { name: "Jxlly", link: "https://www.facebook.com/jxlly.dernyoungsay" },
+            { name: "Fatez", link: "https://www.facebook.com/fatez.dernyongsay" },
+            { name: "Day", link: "https://www.facebook.com/day.dernyoungsay" },
+            { name: "Porsch", link: "https://www.facebook.com/porsch.dernyoungsay" },
+            { name: "Medsigx", link: "https://www.facebook.com/Medsigx" },
+            { name: "Ganz", link: "https://www.facebook.com/Ganzdys" },
+            { name: "Min", link: "https://www.facebook.com/profile.php?id=61583563406342" },
+            { name: "Bacon", link: "https://www.facebook.com/bacon.dernyoungsay" },
+            { name: "Seefour", link: "https://www.facebook.com/seefour.dernyoungsay" },
+            { name: "Painx", link: "https://www.facebook.com/painfui.dernyoungsay" },
+            { name: "Icey", link: "https://www.facebook.com/Alpha.Wellesley" },
+            { name: "Baycon", link: "https://www.facebook.com/baycon.elfuego" },
+            { name: "Sim", link: "https://www.facebook.com/sim.xers" },
+            { name: "Gxni", link: "https://www.facebook.com/gxni.uzi" },
+            { name: "Combo", link: "https://www.facebook.com/combo.dernyoungsay" },
+            { name: "Real", link: "https://www.facebook.com/real.dernyoungsay.993545" },
+            { name: "Kyler", link: "https://www.facebook.com/kyler.ghett" },
+            { name: "Cevo", link: "https://www.facebook.com/cevo.mommam" },
+            { name: "Songsu", link: "https://www.facebook.com/sxngsxdys" },
+            { name: "Coos", link: "https://www.facebook.com/coos.bestpart" },
+            { name: "Peddzy", link: "https://www.facebook.com/peddzyy" },
+            { name: "Zen", link: "https://www.facebook.com/Zenwasd" },
+            { name: "Realx", link: "https://www.facebook.com/real.justcry" }, 
+            { name: "Bangto", link: "https://www.facebook.com/hhs.haha.90" },
+            { name: "Oscar", link: "https://www.facebook.com/ziggado.dereck" },
+            { name: "Kung", link: "https://www.facebook.com/snow.dernyoungsay" },
+            { name: "Ronx", link: "https://www.facebook.com/rxnnylesbr" },
+            { name: "Jacob", link: "https://www.facebook.com/JacobLaurenn" },
+            { name: "Est", link: "https://www.facebook.com/est.wellesley" },
+            { name: "Interneptq", link: "https://www.facebook.com/Interneptq1" },
+            { name: "Jimmy", link: "https://www.facebook.com/banchamek.banchamek.banchamek.2025" },
+            { name: "Han", link: "https://www.facebook.com/profile.php?id=61583018188887" },
+            { name: "Auan", link: "https://www.facebook.com/eithan.styleboy" },
+            { name: "Trafalgar", link: "https://www.facebook.com/TrafalgarWC" },
             { name: "Wh݂ipcrꫀིྀa݁m ヽ", link: "https://www.facebook.com/profile.php?id=61585754639620" },
-            { name: "Oshi Dernyoungsay ", link: "https://www.facebook.com/ssssssz168" },
-            { name: "White Dernyoungsay ", link: "https://www.facebook.com/whitee.kodomo" },
-            { name: "Uno Dernyoungsay ", link: "https://www.facebook.com/uno.kodomo" },
+            { name: "Oshi", link: "https://www.facebook.com/ssssssz168" },
+            { name: "White", link: "https://www.facebook.com/whitee.kodomo" },
+            { name: "Uno", link: "https://www.facebook.com/uno.kodomo" },
         ];
 
         // 1. Assign Ranks
@@ -381,7 +388,8 @@
         function createCard(member) {
             const imgSrc = defaultImg;
             const rankImgSrc = rankIcons[member.rank];
-            const displayLink = member.link.replace(/^https?:\/\/(www\.)?facebook\.com\//, '').substring(0, 20) + '...';
+            // ตัดชื่อลิ้งก์ให้สั้นลงเพื่อความสวยงาม
+            const displayLink = member.link.replace(/^https?:\/\/(www\.)?facebook\.com\//, '').substring(0, 15) + (member.link.length > 25 ? '...' : '');
 
             return `
                 <a href="${member.link}" target="_blank" class="member-card">
