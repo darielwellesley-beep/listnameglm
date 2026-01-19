@@ -185,8 +185,6 @@
             gap: 6px;
         }
 
-        /* เอา class .rank-icon ออกจาก CSS ก็ได้ หรือปล่อยไว้ก็ไม่มีผลเพราะเราลบ element ออกจาก JS แล้ว */
-
         .name {
             font-family: var(--font-main);
             font-weight: 700;
@@ -287,17 +285,21 @@
     </div>
 
     <script>
-        // แก้ไขรูปโปรไฟล์ใหม่ที่นี่
         const defaultImg = "https://img2.pic.in.th/sdds.png";
 
-        // --- ข้อมูล Rank (ยังคงไว้ใช้สำหรับจัดหมวดหมู่ แต่ไม่แสดงไอคอน) ---
-        const founderName = "Nixeny";
+        // --- ตั้งค่ารายชื่อที่เป็น LEADER ---
+        // (ชื่อต้องตรงกับใน rawMembers เป๊ะๆ ถึงจะขึ้นเป็น Leader)
         const leadNames = [
-            "Tail", "Day", "Fatez", 
-            "Seefour", "Real"
+            "TopRank Glmofusstyle", 
+            "Jackboii Glmofusstyle", 
+            "Lightning Glmofusstyle", 
+            "Patrick Glmofusstyle", 
+            "Jung Glmofusstyle",
+            "Quest GGlmofusstyle"
         ];
 
-        // --- รายชื่อสมาชิก ---
+        // --- รายชื่อสมาชิกทั้งหมด ---
+        // *** วิธีเพิ่มสมาชิก: ก๊อปปี้บรรทัด { name: "...", link: "..." }, ไปวางต่อท้าย ***
         let rawMembers = [
             { name: "TopRank Glmofusstyle", link: "https://www.facebook.com/jackson.nowhere.s" },
             { name: "Jackboii Glmofusstyle", link: "https://www.facebook.com/profile.php?id=61577082537642" },
@@ -305,14 +307,21 @@
             { name: "Patrick Glmofusstyle", link: "https://www.facebook.com/patrick.dandelions" },
             { name: "Jung Glmofusstyle", link: "https://www.facebook.com/jung.glimpseofus" },
             { name: "Quest GGlmofusstyle", link: "https://www.facebook.com/profile.php?id=61580971017549" },
+            
+            // --- ใส่สมาชิกใหม่ต่อจากตรงนี้ ---
+            // ตัวอย่าง:
+            // { name: "ชื่อใหม่", link: "ลิงก์เฟส" },
+
         ];
 
         // 1. Assign Ranks
         function assignRanks(list) {
             return list.map(m => {
                 let rank = 'member';
-                if (m.name === founderName) rank = 'founder';
-                else if (leadNames.includes(m.name)) rank = 'lead';
+                // ถ้าชื่ออยู่ในรายการ leadNames ให้เป็น lead
+                if (leadNames.includes(m.name)) {
+                    rank = 'lead';
+                }
                 return { ...m, rank };
             });
         }
@@ -320,23 +329,24 @@
         // 2. Process Data
         let allMembers = assignRanks(rawMembers);
         
-        // เรียงลำดับความสำคัญก่อน (Founder -> Lead -> Member)
-        const rankPriority = { 'founder': 1, 'lead': 2, 'member': 3 };
+        // เรียงลำดับความสำคัญก่อน (Lead -> Member)
+        const rankPriority = { 'lead': 1, 'member': 2 };
         allMembers.sort((a, b) => rankPriority[a.rank] - rankPriority[b.rank]);
 
-        // แยก Leader 3 คนแรก ออกจาก Members
+        // แยก Leader 6 คนแรก ออกจาก Members
         let leadersList = [];
         let membersList = [];
 
-        leadersList = allMembers.slice(0, 3);
-        membersList = allMembers.slice(3);
+        // Logic: เอา 6 คนแรกสุดไปใส่ Leader, ที่เหลือใส่ Member
+        leadersList = allMembers.slice(0, 6);
+        membersList = allMembers.slice(6);
 
         // Variables for Pagination
         const itemsPerPage = 8;
         let currentPage = 1;
         let filteredMembers = [...membersList];
 
-        // Function to Create Card HTML (ลบส่วนแสดง icon ยศออกแล้ว)
+        // Function to Create Card HTML
         function createCard(member) {
             const imgSrc = defaultImg;
             // ตัดชื่อลิ้งก์ให้สั้นลง
