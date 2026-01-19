@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLMOFUS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- CSS Reset & Base --- */
+        :root {
+            --bg-color: #050505;
+            --card-bg: #1a1a1a;
+            --text-main: #ffffff;
+            --text-sub: #888;
+            --accent-color: #fff;
+            --font-main: 'Orbitron', sans-serif;
+            --font-body: 'Roboto', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- Background Pattern --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+
+        /* --- Main Title (GLMOFUS) --- */
+        .main-header {
+            margin-top: 80px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .site-title {
+            font-family: var(--font-main);
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* เส้นขีดเล็กๆ ใต้ชื่อเหมือนในรูป */
+        .site-title::after {
+            content: "NOT SAINT BUT SINNER"; /* หรือใส่ข้อความเล็กๆ */
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #666;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* --- Search Box --- */
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 50px;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            background: #0f0f0f;
+            color: white;
+            font-family: var(--font-body);
+            text-align: left;
+            outline: none;
+            transition: 0.3s;
+        }
+        .search-box:focus { border-color: #555; background: #151515; }
+
+        /* --- Content Wrapper --- */
+        .content-wrapper {
+            width: 100%;
+            max-width: 1000px; /* ขยายความกว้างเพื่อให้วาง 2 คอลัมน์ได้ถ้าต้องการ */
+            padding: 0 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* --- Section Headers (LEADER / MEMBERS) --- */
+        .section-header {
+            font-family: var(--font-main);
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+        }
+        
+        .section-header i {
+            color: #fff; /* หรือสีเทาตามรูป */
+        }
+
+        /* --- Grid Layout for Cards --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* ปรับให้เป็น Grid คล้ายรูป */
+            gap: 15px;
+        }
+
+        /* --- Member Card --- */
+        .member-card {
+            background: var(--card-bg);
+            border-radius: 8px; /* ปรับให้เหลี่ยมขึ้นนิดนึงตามรูป */
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+            border: 1px solid #222;
+        }
+
+        .member-card:hover {
+            background: #252525;
+            border-color: #555;
+            transform: translateY(-3px);
+        }
+
+        .card-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-pic {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid #444;
+            object-fit: cover;
+            background: #000;
+        }
+
+        .info-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .name-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rank-icon {
+            width: 16px; 
+            height: 16px;
+            object-fit: contain;
+        }
+
+        .name {
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #eee;
+        }
+
+        .link-text {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        /* ปุ่ม Facebook */
+        .fb-icon {
+            color: #444;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+        .member-card:hover .fb-icon { color: #fff; }
+
+
+        /* --- Pagination Controls --- */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            margin-bottom: 50px;
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+        }
+
+        .page-btn {
+            background: transparent;
+            color: #888;
+            border: 1px solid #333;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .page-btn:hover:not(:disabled) { border-color: #fff; color: #fff; }
+        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            padding: 20px;
+            font-size: 0.7rem;
+            color: #333;
+            font-family: var(--font-main);
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            .site-title { font-size: 2.5rem; }
+            .grid-container { grid-template-columns: 1fr; } /* มือถือเรียงเดี่ยว */
+            .content-wrapper { padding: 0 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-header">
+        <h1 class="site-title">GLMOFUS</h1>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-box" placeholder="Search member name...">
+    </div>
+
+    <div class="content-wrapper">
+        
+        <div id="leaderSection">
+            <h2 class="section-header"><i class="fas fa-crown"></i> LEADER</h2>
+            <div class="grid-container" id="leaderListContainer">
+                </div>
+        </div>
+
+        <div id="memberSection">
+            <h2 class="section-header"><i class="fas fa-users"></i> MEMBERS</h2>
+            <div class="grid-container" id="memberListContainer">
+                </div>
+            
+            <div class="pagination">
+                <button class="page-btn" id="prevBtn" onclick="changePage(-1)"><i class="fas fa-chevron-left"></i></button>
+                <span class="page-info" id="pageInfo">1 / 1</span>
+                <button class="page-btn" id="nextBtn" onclick="changePage(1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        DESIGNED BY MYLIST SHOP | CODED BY AI
+    </div>
+
+    <script>
+        const defaultImg = "https://img2.pic.in.th/a479b75c-4908-4b85-82ea-92707086f4cf.png";
+
+        // --- SVG Icons (Base64) ---
+        const rankIcons = {
+            'founder': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI0ZGRDcwMCI+PHBhdGggZD0iTTUgMTZMMyA1TDguNSAxMEwxMiA0TDE1LjUgMTBMMjEgNUwxOSAxNkg1TTE5IDE4SDVWMTlIMTlWMThaIi8+PC9zdmc+',
+            'lead': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI0ZGMDAwMCI+PHBhdGggZD0iTTEyIDE3LjI3TDE4LjE4IDIxTDE2LjU0IDEzLjk3TDIyIDkuMjRMMTQuODEgOC42MkwxMiAyTDkuMTkgOC42MkwyIDkuMjRMNy40NSAxMy45N0w1LjgyIDIxTDEyIDE3LjI3WiIvPjwvc3ZnPg==',
+            'member': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI0JGNDBCRiI+PHBhdGggZD0iTTEyIDEyQzE0LjIxIDEyIDE2IDEwLjIxIDE2IDhDMTYgNS43OSAxNC4yMSA0IDEyIDRDOS43OSA0IDggNS43OSA4IDhDOCAxMC4yMSA5Ljc5IDEyIDEyIDEyTTEyIDE0QzkuMzMgMTQgNCAxNS4zNCA0IDE4VjIwSDIwVjE4QzIwIDE1LjM0IDE0LjY3IDE0IDEyIDE0WiIvPjwvc3ZnPg=='
+        };
+
+        // --- ข้อมูล Rank ---
+        const founderName = "Nixeny Dernyoungsay";
+        const leadNames = [
+            "Tail Dernyoungsay", "Day Dernyoungsay", "Fatez Dernyoungsay", 
+            "Seefour Dernyoungsay", "Real Dernyoungsay"
+        ];
+
+        // --- รายชื่อสมาชิก ---
+        let rawMembers = [
+            { name: "Nixeny Dernyoungsay", link: "https://www.facebook.com/nixeny.dernyoungsay" },
+            { name: "Boom Dernyoungsay", link: "https://www.facebook.com/boom.dernyoungsay" },
+            { name: "Tail Dernyoungsay", link: "https://www.facebook.com/tail.kodomo" },
+            { name: "Jxlly Dernyoungsay", link: "https://www.facebook.com/jxlly.dernyoungsay" },
+            { name: "Fatez Dernyoungsay", link: "https://www.facebook.com/fatez.dernyongsay" },
+            { name: "Day Dernyoungsay", link: "https://www.facebook.com/day.dernyoungsay" },
+            { name: "Porsch Dernyoungsay", link: "https://www.facebook.com/porsch.dernyoungsay" },
+            { name: "Medsigx Dernyoungsay", link: "https://www.facebook.com/Medsigx" },
+            { name: "Ganz Dernyoungsay", link: "https://www.facebook.com/Ganzdys" },
+            { name: "Min Dernyoungsay", link: "https://www.facebook.com/profile.php?id=61583563406342" },
+            { name: "Bacon Dernyoungsay", link: "https://www.facebook.com/bacon.dernyoungsay" },
+            { name: "Seefour Dernyoungsay", link: "https://www.facebook.com/seefour.dernyoungsay" },
+            { name: "Painx Dernyoungsay", link: "https://www.facebook.com/painfui.dernyoungsay" },
+            { name: "Icey Dernyoungsay", link: "https://www.facebook.com/Alpha.Wellesley" },
+            { name: "Baycon Dernyoungsay", link: "https://www.facebook.com/baycon.elfuego" },
+            { name: "Sim Dernyoungsay", link: "https://www.facebook.com/sim.xers" },
+            { name: "Gxni Dernyoungsay", link: "https://www.facebook.com/gxni.uzi" },
+            { name: "Combo Dernyoungsay", link: "https://www.facebook.com/combo.dernyoungsay" },
+            { name: "Real Dernyoungsay", link: "https://www.facebook.com/real.dernyoungsay.993545" },
+            { name: "Kyler Dernyoungsay", link: "https://www.facebook.com/kyler.ghett" },
+            { name: "Cevo Dernyoungsay", link: "https://www.facebook.com/cevo.mommam" },
+            { name: "Songsu Dernyoungsay", link: "https://www.facebook.com/sxngsxdys" },
+            { name: "Coos Dernyoungsay", link: "https://www.facebook.com/coos.bestpart" },
+            { name: "Peddzy Dernyoungsay", link: "https://www.facebook.com/peddzyy" },
+            { name: "Zen Dernyoungsay", link: "https://www.facebook.com/Zenwasd" },
+            { name: "Realx Dernyoungsay", link: "https://www.facebook.com/real.justcry" }, 
+            { name: "Bangto Dernyoungsay", link: "https://www.facebook.com/hhs.haha.90" },
+            { name: "Oscar Dernyoungsay", link: "https://www.facebook.com/ziggado.dereck" },
+            { name: "Kung Dernyoungsay", link: "https://www.facebook.com/snow.dernyoungsay" },
+            { name: "Ronx Dernyoungsay", link: "https://www.facebook.com/rxnnylesbr" },
+            { name: "Jacob Dernyoungsay", link: "https://www.facebook.com/JacobLaurenn" },
+            { name: "Est Dernyoungsay", link: "https://www.facebook.com/est.wellesley" },
+            { name: "Interneptq Dernyoungsay", link: "https://www.facebook.com/Interneptq1" },
+            { name: "Jimmy Dernyoungsay", link: "https://www.facebook.com/banchamek.banchamek.banchamek.2025" },
+            { name: "Han Dernyoungsay", link: "https://www.facebook.com/profile.php?id=61583018188887" },
+            { name: "Auan Dernyoungsay", link: "https://www.facebook.com/eithan.styleboy" },
+            { name: "Trafalgar Dernyoungsay", link: "https://www.facebook.com/TrafalgarWC" },
+            { name: "Wh݂ipcrꫀིྀa݁m ヽ", link: "https://www.facebook.com/profile.php?id=61585754639620" },
+            { name: "Oshi Dernyoungsay ", link: "https://www.facebook.com/ssssssz168" },
+            { name: "White Dernyoungsay ", link: "https://www.facebook.com/whitee.kodomo" },
+            { name: "Uno Dernyoungsay ", link: "https://www.facebook.com/uno.kodomo" },
+        ];
+
+        // 1. Assign Ranks
+        function assignRanks(list) {
+            return list.map(m => {
+                let rank = 'member';
+                if (m.name === founderName) rank = 'founder';
+                else if (leadNames.includes(m.name)) rank = 'lead';
+                return { ...m, rank };
+            });
+        }
+
+        // 2. Process Data
+        let allMembers = assignRanks(rawMembers);
+        
+        // เรียงลำดับความสำคัญก่อน (Founder -> Lead -> Member)
+        const rankPriority = { 'founder': 1, 'lead': 2, 'member': 3 };
+        allMembers.sort((a, b) => rankPriority[a.rank] - rankPriority[b.rank]);
+
+        // แยก Leader 3 คนแรก ออกจาก Members
+        let leadersList = [];
+        let membersList = [];
+
+        // Logic: เอา 3 คนแรกสุดจากการเรียงลำดับไปใส่ Leader, ที่เหลือใส่ Member
+        leadersList = allMembers.slice(0, 3);
+        membersList = allMembers.slice(3);
+
+        // Variables for Pagination (Only for Members)
+        const itemsPerPage = 8; // ปรับจำนวนต่อหน้าตรงนี้
+        let currentPage = 1;
+        let filteredMembers = [...membersList]; // สำหรับ Search
+
+        // Function to Create Card HTML
+        function createCard(member) {
+            const imgSrc = defaultImg;
+            const rankImgSrc = rankIcons[member.rank];
+            const displayLink = member.link.replace(/^https?:\/\/(www\.)?facebook\.com\//, '').substring(0, 20) + '...';
+
+            return `
+                <a href="${member.link}" target="_blank" class="member-card">
+                    <div class="card-left">
+                        <img src="${imgSrc}" class="profile-pic" alt="Profile">
+                        <div class="info-text">
+                            <div class="name-container">
+                                <img src="${rankImgSrc}" class="rank-icon">
+                                <span class="name">${member.name}</span>
+                            </div>
+                            <span class="link-text">${displayLink}</span>
+                        </div>
+                    </div>
+                    <div class="fb-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                </a>
+            `;
+        }
+
+        // Render Leaders (Static, no pagination)
+        function renderLeaders() {
+            const container = document.getElementById('leaderListContainer');
+            container.innerHTML = "";
+            if(leadersList.length === 0) {
+                document.getElementById('leaderSection').style.display = 'none';
+            } else {
+                leadersList.forEach(m => {
+                    container.innerHTML += createCard(m);
+                });
+            }
+        }
+
+        // Render Members (Paginated)
+        function renderMembers() {
+            const container = document.getElementById('memberListContainer');
+            container.innerHTML = "";
+
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageItems = filteredMembers.slice(start, end);
+
+            if(pageItems.length === 0) {
+                container.innerHTML = "<div style='color:#666; width:100%; text-align:center;'>ไม่พบรายชื่อ</div>";
+            } else {
+                pageItems.forEach(m => {
+                    container.innerHTML += createCard(m);
+                });
+            }
+            updatePagination();
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredMembers.length / itemsPerPage) || 1;
+            document.getElementById('pageInfo').innerText = `${currentPage} / ${totalPages}`;
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === totalPages;
+        }
+
+        function changePage(dir) {
+            currentPage += dir;
+            renderMembers();
+        }
+
+        // Search System
+        document.getElementById('searchInput').addEventListener('keyup', (e) => {
+            const text = e.target.value.toLowerCase();
+            
+            // Search in Members Only (Leaders always stay)
+            filteredMembers = membersList.filter(m => 
+                m.name.toLowerCase().includes(text) || 
+                m.link.toLowerCase().includes(text)
+            );
+            
+            currentPage = 1;
+            renderMembers();
+        });
+
+        // Initialize
+        renderLeaders();
+        renderMembers();
+
+    </script>
+</body>
+</html>
